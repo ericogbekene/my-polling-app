@@ -12,6 +12,7 @@ import { useState, useTransition } from "react";
 export default function CreatePollForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const [options, setOptions] = useState(['', '']); // Start with 2 empty options
   const router = useRouter();
 
@@ -43,7 +44,15 @@ export default function CreatePollForm() {
           }
         });
 
-        await createPoll(formData);
+        const result = await createPoll(formData);
+        
+        if (result?.success) {
+          // Show success message briefly before redirecting
+          setSuccess(true);
+          setTimeout(() => {
+            router.push('/polls?created=true');
+          }, 1500);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       }
@@ -66,6 +75,18 @@ export default function CreatePollForm() {
             <span className="font-medium">Error</span>
           </div>
           <p className="mt-1 text-sm">{error}</p>
+        </div>
+      )}
+
+      {success && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center gap-2 text-green-800">
+            <Check className="h-4 w-4" />
+            <span className="font-medium">Success!</span>
+          </div>
+          <p className="mt-1 text-sm text-green-700">
+            Poll created successfully! Redirecting to polls page...
+          </p>
         </div>
       )}
 
@@ -197,17 +218,17 @@ export default function CreatePollForm() {
             type="button"
             variant="outline"
             onClick={() => router.back()}
-            disabled={isPending}
+            disabled={isPending || success}
             className="flex-1"
           >
             Cancel
           </Button>
-          <Button
+                    <Button
             type="submit"
-            disabled={isPending}
+            disabled={isPending || success}
             className="flex-1"
           >
-            {isPending ? 'Creating...' : 'Create Poll'}
+            {isPending ? 'Creating...' : success ? 'Created!' : 'Create Poll'}
           </Button>
         </div>
       </form>

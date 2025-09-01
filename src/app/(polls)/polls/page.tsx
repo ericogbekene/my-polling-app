@@ -1,11 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { getPublicPolls } from "@/lib/actions/polls";
 import { getSession } from "@/lib/supabase/session";
-import { Calendar, Clock, Users, Vote } from "lucide-react";
+import { Calendar, Clock, Users, Vote, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
-export default async function PollsPage() {
+export default async function PollsPage({
+  searchParams,
+}: {
+  searchParams: { created?: string };
+}) {
   const user = await getSession();
   if (!user) {
     redirect("/sign-in");
@@ -15,6 +20,18 @@ export default async function PollsPage() {
 
   return (
     <div className="mx-auto max-w-4xl w-full py-10">
+      {searchParams.created === 'true' && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center gap-2 text-green-800">
+            <CheckCircle className="h-5 w-5" />
+            <span className="font-medium">Success!</span>
+          </div>
+          <p className="mt-1 text-sm text-green-700">
+            Your poll has been created successfully and is now live.
+          </p>
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold mb-2">All Polls</h1>
