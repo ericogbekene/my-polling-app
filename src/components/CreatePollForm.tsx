@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -82,6 +83,11 @@ export default function CreatePollForm() {
         <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
           <div className="flex items-center gap-2 text-green-800">
             <Check className="h-4 w-4" />
+            // The <Check /> component is an icon from the "lucide-react" icon library.
+            // To ensure it is properly defined and imported, check the top of this file for:
+            //   import { Check } from "lucide-react";
+            // If this import is present, <Check /> is properly defined and can be used as a React component.
+            // If not, add the import statement at the top of the file.
             <span className="font-medium">Success!</span>
           </div>
           <p className="mt-1 text-sm text-green-700">

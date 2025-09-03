@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormState } from "react-dom";
+import {useActionState} from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +10,7 @@ import { signInAction, type AuthState } from "../actions";
 const initialState: AuthState = {};
 
 export function SignInForm() {
-  const [state, formAction] = useFormState(signInAction, initialState);
+  const [state, formAction] = useActionState(signInAction, initialState);
   return (
     <form className="space-y-4" action={formAction}>
       {state?.error ? (
